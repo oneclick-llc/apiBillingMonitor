@@ -21,7 +21,8 @@ print(response.status_code)
 
 result = response.json()
 if response.status_code == 200:
-    if int(float(result["account"]["total_amount"])) < 150000:
-        telegram.bot_sendtext("На чатпуше менее 150к")
+    money = int(float(result["account"]["total_amount"]))
+    if money < 300000:
+        telegram.bot_sendtext(f"На чатпуше {money} рэ")
     else:
         print("yay")
