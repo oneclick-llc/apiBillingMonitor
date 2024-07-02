@@ -1,5 +1,5 @@
 import requests
-
+import secrets
 import telegram
 
 url = 'https://api.chatpush.ru/api/v1/account'
@@ -7,7 +7,7 @@ url = 'https://api.chatpush.ru/api/v1/account'
 data = {}
 
 headers = {
-    'Authorization': 'Bearer ',
+    'Authorization': 'Bearer ' + secrets.chatpush_bearer,
 }
 
 response = requests.get(
@@ -22,7 +22,7 @@ print(response.status_code)
 result = response.json()
 if response.status_code == 200:
     money = int(float(result["account"]["total_amount"]))
-    if money < 300000:
-        telegram.bot_sendtext(f"На чатпуше {money} рэ")
+    if money < secrets.chatpush_delta_threshold:
+        telegram.bot_sendtext(f"На чатпуше {money:,} рэ")
     else:
-        print("yay")
+        print(money, "yay")
