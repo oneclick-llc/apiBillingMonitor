@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: chatpush-balance-exporter-cronjob
+  namespace: prometheus
+  spec:
+    schedule: '*/5 * * * *'
+    concurrencyPolicy: A
+    jobTemplate:
+      spec:
+        backoffLimit: 2
+        activeDeadlineSeconds: 100
+        template:
+          spec:
+            containers:
+              - name: chatpush-balance-exporter
+                image: anhedonialex/chatpush-balance-exporter-cronjob:latest
+                imagePullPolicy: Never # Использует локально доступный образ
+            restartPolicy: Never

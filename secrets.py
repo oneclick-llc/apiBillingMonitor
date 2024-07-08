@@ -10,5 +10,5 @@ chatpush_bearer = dotenv.get_key(env_path, "CHATPUSH_BEARER")
 #CONFIG
 chatpush_threshold = int(dotenv.get_key(env_path, "CHATPUSH_TRESHOLD"))
 chatpush_delta_threshold = int(dotenv.get_key(env_path, "CHATPUSH_DELTA_TRESHOLD"))
-
+pushgateway_ip = dotenv.get_key(env_path, "PUSHGATEWAY_IP")
 

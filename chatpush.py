@@ -22,7 +22,7 @@ print(response.status_code)
 result = response.json()
 if response.status_code == 200:
     money = int(float(result["account"]["total_amount"]))
-    if money < secrets.chatpush_delta_threshold:
+    if money < secrets.chatpush_threshold:
         telegram.bot_sendtext(f"На чатпуше {money:,} рэ")
     else:
         print(money, "yay")
