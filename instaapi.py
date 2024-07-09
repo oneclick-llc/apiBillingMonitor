@@ -21,11 +21,11 @@ with open('data.json', 'w') as f:
     json.dump(response.json(), f)
 '''
 if response.status_code == 200:
-    limit = float(int(response.headers["X-RateLimit-Requests-Limit"]))
-    remaining = float(int(response.headers["X-RateLimit-Requests-Remaining"]))
+    limit = int(response.headers["X-RateLimit-Requests-Limit"])
+    remaining = int(response.headers["X-RateLimit-Requests-Remaining"])
     percentage = (limit-remaining)*100/limit
     print(percentage)
-    if percentage > 70:
-        telegram.bot_sendtext(f"Instagram Scraper 2023 истрачен на {percentage:.2f}%")
+    if percentage > 60:
+        telegram.bot_sendtext(f"Instagram Scraper 2023 истрачен на {percentage:.2f}%\nПотрачено: {limit-remaining:,} запросов\nОсталось: {remaining:,} запросов\nЛимит: {limit:,}")
     else:
         print("yay")
