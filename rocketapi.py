@@ -26,6 +26,7 @@ if response.status_code == 200:
     percentage = (requests)*100/limit
     print(percentage)
     if percentage > 60:
-        telegram.bot_sendtext(f"Instagram RocketAPI истрачен на {percentage:.2f}%\nПотрачено: {requests:,} запросов\nОсталось: {limit - requests:,} запросов\nЛимит: {limit:,}")
+        telegram.bot_sendtext(f"Опасно!\nInstagram RocketAPI истрачен на {percentage:.2f}%\nПотрачено: {requests:,} запросов\nОсталось: {limit - requests:,} запросов\nЛимит: {limit:,}")
     else:
+        telegram.bot_sendtext(f"Instagram RocketAPI истрачен на {percentage:.2f}%\nПотрачено: {requests:,} запросов\nОсталось: {limit - requests:,} запросов\nЛимит: {limit:,}")
         print("yay")

@@ -26,6 +26,7 @@ if response.status_code == 200:
     percentage = (limit-remaining)*100/limit
     print(percentage)
     if percentage > 60:
-        telegram.bot_sendtext(f"Instagram Scraper 2023 истрачен на {percentage:.2f}%\nПотрачено: {limit-remaining:,} запросов\nОсталось: {remaining:,} запросов\nЛимит: {limit:,}")
+        telegram.bot_sendtext(f"Опасно!\nInstagram Scraper 2023 истрачен на {percentage:.2f}%\nПотрачено: {limit-remaining:,} запросов\nОсталось: {remaining:,} запросов\nЛимит: {limit:,}")
     else:
+        telegram.bot_sendtext(f"Instagram Scraper 2023 истрачен на {percentage:.2f}%\nПотрачено: {limit - remaining:,} запросов\nОсталось: {remaining:,} запросов\nЛимит: {limit:,}")
         print("yay")
