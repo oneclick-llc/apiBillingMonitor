@@ -6,6 +6,7 @@
 ```
 #secrets
 INSTA_API=""
+INSTA_ROCKET_API="
 BOT_TOKEN=""
 CHAT_ID=""
 CHATPUSH_BEARER=""
