@@ -7,7 +7,7 @@ on:
 
 jobs:
   build_push_prod:
-    uses: oneclick-llc/shared_workflows/.github/workflows/yc_build_and_push.yaml@v0.2.10
+    uses: oneclick-llc/shared_workflows/.github/workflows/yc_build_and_push.yaml@v0.7.4
     with:
       yc_cr_registry: cr.yandex/crp3o1bbdrnbsukr2drh
       yc_cr_repository: apibillingmonitor
@@ -18,7 +18,6 @@ jobs:
       dockerfile: ./Dockerfile
     secrets:
       dockerconfigjson: ${{ secrets.YC_LOOKY_PROD_DOCKERCONFIGJSON }}
-      git_token: ${{ github.token }}
 
   deploy_prod:
     needs: build_push_prod
