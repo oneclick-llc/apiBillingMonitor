@@ -18,6 +18,7 @@ jobs:
       dockerfile: ./Dockerfile
     secrets:
       dockerconfigjson: ${{ secrets.YC_LOOKY_PROD_DOCKERCONFIGJSON }}
+      git_token: ${{ github.token }}
 
   deploy_prod:
     needs: build_push_prod
