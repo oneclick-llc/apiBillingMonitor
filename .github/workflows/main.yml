@@ -15,7 +15,7 @@ jobs:
       env: production
       tag_prefix: prod-
       context: ./
-      dockerfile: ./Dockerfile
+      dockerfile: ./Dockerfile.chatpush_pushgateway
     secrets:
       dockerconfigjson: ${{ secrets.YC_LOOKY_PROD_DOCKERCONFIGJSON }}
 
