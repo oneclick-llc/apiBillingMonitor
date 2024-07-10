@@ -1,0 +1,66 @@
+name: "YC: Build, push and deploy prod"
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  build_push_prod:
+    uses: oneclick-llc/shared_workflows/.github/workflows/yc_build_and_push.yaml@v0.2.10
+    with:
+      yc_cr_registry: cr.yandex/crp3o1bbdrnbsukr2drh
+      yc_cr_repository: apibillingmonitor
+      bundle_without: production
+      env: production
+      tag_prefix: prod-
+      context: ./
+      dockerfile: ./Dockerfile
+    secrets:
+      dockerconfigjson: ${{ secrets.YC_LOOKY_PROD_DOCKERCONFIGJSON }}
+      git_token: ${{ secrets.GH_PAT }}
+
+  deploy_prod:
+    needs: build_push_prod
+    runs-on: ubuntu-22.04
+    env:
+      KUBECONFIG_B64: ${{ secrets.YC_LOOKY_PROD_KUBECONFIG }}
+      DOCKERCONFIGJSON_B64: ${{ secrets.YC_LOOKY_COMMON_HELM_DOCKERCONFIGJSON }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Init kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "$KUBECONFIG_B64" | base64 -d > ~/.kube/config
+          chmod 600 ~/.kube/config
+      - name: Login to Yandex Cloud Container Registry
+        id: login-cr
+        uses: yc-actions/yc-cr-login@v2
+        with:
+          yc-sa-json-credentials: ${{ secrets.YC_COMMON_HELM_PULL_SA_JSON }}
+      - uses: helmwave/setup-action@v0.3.0
+        name: Install helmwave
+        with:
+          version: '0.36.4'
+      - run: helmwave up
+        env:
+         HELMWAVE_KUBEDOG: "true"
+         HELMWAVE_AUTO_YML: "true"
+         HELMWAVE_AUTO_BUILD: "true"
+         HELMWAVE_TAGS: "${{ github.event.repository.name }},prod"
+         HELMWAVE_MATCH_ALL_TAGS: "true"
+         NAMESPACE: default
+         VALUES_ENV: prod
+         REPO_NAME: apibillingmonitor
+         REPO_REGISTRY: cr.yandex/crp3o1bbdrnbsukr2drh
+         REPO_TAG: ${{ needs.build_push_prod.outputs.tag }}
+         INSTA_API: ${{ secrets.INSTA_API }}
+         BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+         CHAT_ID: ${{ secrets.CHAT_ID }}
+         CHATPUSH_BEARER: ${{ secrets.CHATPUSH_BEARER }}                           
+      - name: Drop credentials
+        if: always()
+        run: |
+          rm -rf ~/.kube
+          rm -rf ~/.docker

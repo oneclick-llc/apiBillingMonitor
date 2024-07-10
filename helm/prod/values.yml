@@ -1,0 +1,20 @@
+vars:
+  INSTA_API: [[ env "INSTA_API" ]]
+  BOT_TOKEN: [[ env "BOT_TOKEN" ]]
+  CHAT_ID: [[ env "CHAT_ID" ]]
+  CHATPUSH_BEARER: [[ env "CHATPUSH_BEARER" ]]
+  CHATPUSH_TRESHOLD: "300000"
+  CHATPUSH_DELTA_TRESHOLD: "1500"
+  PUSHGATEWAY_IP: "localhost:9091"
+
+image:
+  repository: [[ env "REPO_REGISTRY" ]]/[[ env "REPO_NAME" ]]
+  tag: [[ env "REPO_TAG" ]]
+
+
+schedule: "*/5 * * * *"
+
+
+constraints:
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 1
